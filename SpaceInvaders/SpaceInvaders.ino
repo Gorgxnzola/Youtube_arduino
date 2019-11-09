@@ -63,19 +63,20 @@ void setup() {
   Serial.begin(9600);
   // Set default LED states.
   for (int i = 0; i < 8; i++) {
+    digitalWrite(led_cols[i], HIGH);
     digitalWrite(led_rows[i], LOW);
   }
 }
 
 int board[8][8] = {
-  {1, 0, 0, 0, 0, 0, 0, 1},
-  {0, 1, 0, 1, 0, 1, 0, 0},
-  {0, 0, 1, 0, 0, 1, 0, 0},
-  {0, 0, 0, 1, 0, 0, 1, 0},
-  {0, 1, 1, 0, 1, 0, 0, 0},
-  {0, 1, 1, 0, 0, 1, 0, 0},
-  {0, 0, 0, 0, 0, 0, 1, 1},
-  {1, 0, 1, 1, 0, 0, 0, 1},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
 };
 
 /*    ===========================================================================
@@ -98,7 +99,7 @@ void write_leds_from_matrix(int resolution)
       {
         write_point(i, j);
         delay(resolution);
-        clear_leds(resolution);
+        clear_leds();
       }
     }
   }
@@ -125,7 +126,7 @@ void write_leds_from_matrix_reverse(int resolution)
       {
         write_point(i, j);
         delay(resolution);
-        clear_leds(resolution);
+        clear_leds();
       }
     }
   }
@@ -134,13 +135,13 @@ void write_leds_from_matrix_reverse(int resolution)
 
 
 // Clears all LEDs to allow for calculation reset
-void clear_leds(int res) {
+void clear_leds() {
   for (int i = 0; i < 8; i++)
   {
-    digitalWrite(led_rows[i], LOW);
     digitalWrite(led_cols[i], HIGH);
+    digitalWrite(led_rows[i], LOW);
   }
-  delay(res);
+  // delay();
 }
 
 /*    ===========================================================================
@@ -171,11 +172,11 @@ void write_point(int r, int c)
         Function: test_lights
         Parameters: None
         Return: None
-        Description: Iterates through the LED matrix (NOT the array) and writes
+        Description: IIterates through random patterns. 
     ===========================================================================
 */
 
-void test_lights()
+void test_leds()
 {
   for (int i = 0; i < 8; i++)
   {
@@ -183,20 +184,53 @@ void test_lights()
     {
       write_point(i, j);
       delay(20);
-      clear_leds(10);
+      clear_leds();
     }
   }
+
+  for (int i = 0; i < 8; i++)
+  {
+    for (int j = 0; j < 8; j++)
+    {
+      write_point(j, i);
+      delay(20);
+      clear_leds();
+    }
+  }
+  
   for (int i = 8; i >= 0; i--)
   {
     for (int j = 8; j >= 0; j--)
     {
       write_point(i, j);
       delay(20);
-      clear_leds(10);
+      clear_leds();
     }
   }
 
+  for (int i = 8; i >= 0; i--)
+    {
+      for (int j = 8; j >= 0; j--)
+      {
+        write_point(j, i);
+        delay(20);
+        clear_leds();
+      }
+    }
+    
+  for (int i = 0; i <= 8 ; i++)
+    {
+        write_point(i, i);
+        delay(20);
+        clear_leds();
+    }
 
+  for (int i = 8; i >= 0; i--)
+    {
+        write_point(i, i);
+        delay(20);
+        clear_leds();
+    }
 }
 
 
@@ -219,31 +253,29 @@ void write_block(int row_a, int row_b, int col)
     digitalWrite(led_rows[i], HIGH);
   }
 
-  for (int i = 0; i < 8; i++)
+  for (int j = 0; j < 8; j++)
   {
-    if (i != col)
+    if (j != col)
     {
-      digitalWrite(led_cols[i], HIGH);
+      digitalWrite(led_cols[j], HIGH);
     }
     else
     {
-      digitalWrite(led_cols[i], LOW);
+      digitalWrite(led_cols[j], LOW);
     }
   }
 }
 
+void led_block_iteration() {
+ // COde for LED loop
+for (int i = 2; i < 5; i++)
+  {
+    write_block(i, i + 2, 3);
+    delay(100);
+    clear_leds();
+  }
+}
 
 void loop() {
-  for (int i = 2; i < 8; i++)
-  {
-    write_block(i, i + 2, 4);
-    delay(20);
-    clear_leds(50);
-
-
-
-  }
-
-
-
+// test_leds();
 }
